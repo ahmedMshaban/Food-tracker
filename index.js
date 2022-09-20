@@ -76,3 +76,43 @@ function formHandler(e) {
 }
 
 trackerForm.addEventListener("submit", formHandler);
+
+function init() {
+  API.get("/")
+    .then((data) => {
+      if (data?.documents.length > 0) {
+        data.documents.forEach((doc) => {
+          foodList.insertAdjacentHTML(
+            "beforeend",
+            `<li class="card">
+          <div>
+            <h3 class="name">${capitalize(doc.fields.name.stringValue)}</h3>
+            <div class="calories">${calculateCalories(
+              +doc.fields.carbs.integerValue,
+              +doc.fields.protein.integerValue,
+              +doc.fields.fat.integerValue
+            )} calories</div>
+            <ul class="macros">
+              <li class="carbs">
+                <div>Carbs</div>
+                <div class="value">${doc.fields.carbs.integerValue}g</div>
+              </li>
+              <li class="protein">
+                <div>Protein</div>
+                <div class="value">${doc.fields.protein.integerValue}g</div>
+              </li>
+              <li class="fat">
+                <div>Fat</div>
+                <div class="value">${doc.fields.fat.integerValue}g</div>
+              </li>
+            </ul>
+          </div>
+        </li>`
+          );
+        });
+      }
+    })
+    .catch((error) => console.error(error));
+}
+
+init();
