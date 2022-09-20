@@ -1,5 +1,6 @@
 import FetchWrapper from "./fetch-wrapper.js";
 import { capitalize, calculateCalories } from "./helpers.js";
+import snackbar from "https://cdn.skypack.dev/pin/snackbar@v1.1.0-hTNTl5YfU3b9FO86FHxb/mode=imports,min/optimized/snackbar.js";
 
 const trackerForm = document.querySelector("#create-form");
 const foodName = document.querySelector("#create-name");
@@ -33,9 +34,9 @@ function formHandler(e) {
   })
     .then((data) => {
       if (data.error) {
+        snackbar.show("Some data is missing.");
         throw new Error(data.error);
       }
-
       foodList.insertAdjacentHTML(
         "beforeend",
         `<li class="card">
@@ -63,6 +64,8 @@ function formHandler(e) {
           </div>
         </li>`
       );
+
+      snackbar.show("Food added successfully.");
 
       foodName.value = "";
       foodCarbs.value = "";
