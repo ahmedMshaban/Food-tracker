@@ -1,4 +1,5 @@
 import FetchWrapper from "./fetch-wrapper.js";
+import { capitalize, calculateCalories } from "./helpers.js";
 
 const trackerForm = document.querySelector("#create-form");
 const foodName = document.querySelector("#create-name");
@@ -39,8 +40,12 @@ function formHandler(e) {
         "beforeend",
         `<li class="card">
           <div>
-            <h3 class="name">${foodName.value}</h3>
-            <div class="calories">0 calories</div>
+            <h3 class="name">${capitalize(foodName.value)}</h3>
+            <div class="calories">${calculateCalories(
+              foodCarbs.value,
+              foodProtein.value,
+              foodFat.value
+            )} calories</div>
             <ul class="macros">
               <li class="carbs">
                 <div>Carbs</div>
