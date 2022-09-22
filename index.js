@@ -10,11 +10,17 @@ const foodCarbs = document.querySelector("#create-carbs");
 const foodProtein = document.querySelector("#create-protein");
 const foodFat = document.querySelector("#create-fat");
 const foodList = document.querySelector("#food-list");
+const totalCalories = document.querySelector("#total-calories");
 const API = new FetchWrapper(
   "https://firestore.googleapis.com/v1/projects/jsdemo-3f387/databases/(default)/documents/ahmedshaban"
 );
 const appData = new AppData();
 let myChart = null;
+
+function redner() {
+  totalCalories.textContent = appData.getTotalCalories();
+  renderChart();
+}
 
 function renderChart() {
   myChart?.destroy();
@@ -85,14 +91,14 @@ function displayEntry(list, name, carbs, protein, fat) {
 function formHandler(e) {
   e.preventDefault();
 
-  // if (
-  //   !foodName.value ||
-  //   !foodCarbs.value ||
-  //   !foodProtein.value ||
-  //   !foodFat.value
-  // ) {
-  //   return;
-  // }
+  if (
+    !foodName.value ||
+    !foodCarbs.value ||
+    !foodProtein.value ||
+    !foodFat.value
+  ) {
+    return;
+  }
 
   API.post("/", {
     fields: {
@@ -114,7 +120,7 @@ function formHandler(e) {
         foodProtein.value,
         foodFat.value
       );
-      renderChart();
+      redner();
       Snackbar.show("Food added successfully.");
 
       foodName.value = "";
@@ -138,7 +144,7 @@ function init() {
             doc.fields.fat.integerValue
           );
         });
-        renderChart();
+        redner();
       }
     })
     .catch((error) => console.error(error));

@@ -34,4 +34,12 @@ export default class AppData {
     });
     return total;
   }
+
+  getTotalCalories() {
+    return this.food.reduce((prevFood, currFood) => {
+      return (
+        prevFood + currFood.carbs * 4 + currFood.protein * 4 + currFood.fat * 9
+      );
+    }, 0);
+  }
 }
